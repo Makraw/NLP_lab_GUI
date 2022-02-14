@@ -3,7 +3,6 @@ the purpose of this code is to allow the user to run PDF2TXT graphically.
 As it stands, running PDF2TXT is a complicated process that requires terminal usage.
 To make the first step in the pipeline accessible to members of the nano lab, who may have limited skills with the
 Linux terminal, a graphical version is designed here.
-
 Ultimately, this program is just a form to fill out that will store the entries and pass that stuff off to the already
 existing pdf2txt converter.
 """
@@ -12,37 +11,30 @@ import os
 # build the window and graphics with tkinter
 from tkinter import *
 
+# the code that handles the installation of pdf2txt and its dependencies
+# check if the filepath exists
+if os.path.exists('~/Packages/pdf2txt_venv_gui/'):
+    # this block checks for updates
+    os.system('cd ~/Packages/pdf2txt_venv_gui')
+    os.system('source ~/Packages/pdf2txt_venv_gui/PDF2TXT/bin/activate')
+    os.system('pip3 install farm-haystack -U')
 
-def run_converter():
-    command = ''
-    # attempt to build the command string from the entered values
-    try:
-        input_filepath = str(file_path_in.get())
-        output_filepath = str(file_path_out.get())
-        convert_whole = (whole_folder > 0)
+    # this will run if the log file does not exist, meaning this is the first time this program is run
+else:
+    print('PDF2TXT_GUI has not previously been run. Installing PDF2TXT and dependencies\n\n')
 
-        # check for complete entry. Crash if entry is bad
-        if input_filepath == '':
-            raise Exception('Input file path not specified')
-        if output_filepath == '':
-            raise Exception('Output file path not specified')
+    # the following will create the file structure
+    os.system('mkdir ~/Packages/pdf2txt_venv_gui')
+    os.system('python3 -m venv ~/Packages/pdf2txt_venv_gui')
+    os.system('source ~/Packages/pdf2txt_venv_gui/PDF2TXT/bin/activate')
+    os.system('cd ~/Packages/pdf2txt_venv_gui/PDF2TXT')
 
-        # create the string to run
-        if convert_whole:
-            command = 'python3 ~/Packages/pdf2txt_venv/PDF2TXT/pdf2txt/pdf2txt.py -d ' + input_filepath + ' -o ' + output_filepath
-        else:
-            command = 'python3 ~/Packages/pdf2txt_venv/PDF2TXT/pdf2txt/pdf2txt.py -f ' + input_filepath + ' -o ' + output_filepath
-
-    except:
-        print('an error has occurred and the program has failed.')
-
-    # initialize the venv as needed for pdf2txt
-    os.system('source ~/Packages/pdf2txt_venv/bin/activate')
-
-    # use system.os to run the command in terminal to do the conversion
-    os.system(command)
+    # this downloads the program and its dependencies
+    os.system('git clone https://github.com/NLPatVCU/PDF2TXT.git')
+    os.system('pip3 install farm-haystack')
 
 
+"""
 class Window:
     def __init__(self, window):
         # use a label to prompt the user to enter the data needed to do the conversion
@@ -80,3 +72,4 @@ converter=Window(window)
 window.title('PDF to Text')
 window.geometry('250x200')
 window.mainloop()
+"""
