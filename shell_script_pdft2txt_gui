@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# This is a shell script that serves to run all of the stuff needed for pdf2txt
+
+# check if the directory already exists
+if [ -d "/home/makraw/Packages/pdf2txt_venv_gui/" ]; then
+	echo "Checking for updates"
+	echo ""
+	cd ~/Packages/pdf2txt_venv_gui
+	source bin/activate
+	pip3 install farm-haystack -U
+else
+	echo "PDF2TXT GUI version has not been run before. Installing PDF2TXTGUI and dependencies."
+	echo ""
+	mkdir ~/Packages/pdf2txt_venv_gui/
+	python3 -m venv ~/Packages/pdf2txt_venv_gui/
+	cd ~/Packages/pdf2txt_venv_gui
+	source bin/activate
+	git clone https://github.com/NLPatVCU/PDF2TXT.git
+	pip3 install farm-haystack
+fi
