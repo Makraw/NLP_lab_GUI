@@ -7,13 +7,19 @@ RUNPATH=/home/$USER/Packages/pdf2txt_venv_gui/PDF2TXT/pdf2txt
 
 
 # verify internet connection before attempting to update or install
+wget -q --spider https://google.com
+connected=true
+if [ $? -eq 0 ]; then
+    connected=false
+fi
+    
 
 # check if the directory already exists
 if [ -d "/home/$USER/Packages/pdf2txt_venv_gui/" ]; then
 	echo "PDF2TXT already installed."
 	
 	# this logic handles updating the dependencies. It will not run if there is no internet connection
-	if [ connection_check ]; then
+	if [ $connected ]; then
 		echo "Checking for Updates."
 		echo ""
 		pip3 install farm-haystack -U >& /dev/null	
@@ -27,21 +33,22 @@ if [ -d "/home/$USER/Packages/pdf2txt_venv_gui/" ]; then
 # if it doesn't exist, we need to make it and install all the stuff we need
 else
 	echo "PDF2TXT has not been installed."
-	echo ""
+	echo "Installing pdf2txt and dependencies."
+    echo ""
 	
 	#this logic makes sure we have an internet connection. If we don't, it warns the user and exits the program
-	if [ connection_check ]; then
+	if [ $connected ]; then
 		mkdir /home/$USER/Packages/pdf2txt_venv_gui/
 		python3 -m venv /home/$USER/Packages/pdf2txt_venv_gui/
 		cd /home/$USER/Packages/pdf2txt_venv_gui
 	
 		# the installation of the dependencies and whatnot are done within the virtual environment we just built
 		source bin/activate
-		git clone https://github.com/NLPatVCU/PDF2TXT.git
-		pip3 install farm-haystack
+		git clone https://github.com/NLPatVCU/PDF2TXT.git >& /dev/null
+		pip3 install farm-haystack >& /dev/null
 		deactivate
 	else
-		echo "You are not connected to the internet (or Google is down and the check failed). Exiting install"
+		echo "You are not connected to the internet. Exiting install."
 		exit
 	fi
 fi
@@ -74,16 +81,3 @@ else
 fi
 echo ""
 echo "conversion complete. converted files located at $outfile"
-
-
-
-# this function checks for internet connection
-connection_check() {
-	ping_result=$(ping -c 1 -q google.com >&/dev/null) # check for connection by pinging google, return true if the ping works
-	if [ $ping_result != 0 ]; then
-		return true
-	else
-		return false
-	fi
-		
-}
