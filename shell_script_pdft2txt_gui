@@ -7,7 +7,7 @@ RUNPATH=/home/$USER/Packages/pdf2txt_venv_gui/PDF2TXT/pdf2txt
 
 
 # verify internet connection before attempting to update or install
-wget -q --spider https://google.com
+wget -q --spider https://github.com
 connected=true
 if [ $? -eq 0 ]; then
     connected=false
@@ -24,7 +24,7 @@ if [ -d "/home/$USER/Packages/pdf2txt_venv_gui/" ]; then
 		echo ""
 		pip3 install farm-haystack -U >& /dev/null	
 	else
-		echo "No internet connection, skipping updates."
+		echo "Could not connect to github, skipping updates."
 	fi
 	
 	cd /home/$USER/Packages/pdf2txt_venv_gui
@@ -47,8 +47,8 @@ else
 		git clone https://github.com/NLPatVCU/PDF2TXT.git >& /dev/null
 		pip3 install farm-haystack >& /dev/null
 		deactivate
-	else
-		echo "You are not connected to the internet. Exiting install."
+	elses
+		echo "Could not connect to github. Exiting install."
 		exit
 	fi
 fi
