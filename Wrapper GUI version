@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# This is a shell script that serves to run all of the stuff needed for pdf2txt
+
+# identify the file path that will ultimately host the program
+RUNPATH=/home/$USER/Packages/pdf2txt_venv_gui/PDF2TXT/pdf2txt
+
+
+# verify internet connection before attempting to update or install
+wget -q --spider https://github.com
+connected=true
+if [ $? -eq 0 ]; then
+    connected=false
+fi
+    
+
+# check if the directory already exists
+if [ -d "/home/$USER/Packages/pdf2txt_venv_gui/" ]; then
+	echo "PDF2TXT already installed."
+	
+	# this logic handles updating the dependencies. It will not run if there is no internet connection
+	if [ $connected ]; then
+		echo "Checking for Updates."
+		echo ""
+		pip3 install farm-haystack -U >& /dev/null	
+	else
+		echo "Could not connect to github, skipping updates."
+	fi
+	
+	cd /home/$USER/Packages/pdf2txt_venv_gui
+	source bin/activate
+
+# if it doesn't exist, we need to make it and install all the stuff we need
+else
+	echo "PDF2TXT has not been installed."
+	echo "Installing pdf2txt and dependencies."
+    echo ""
+	
+	#this logic makes sure we have an internet connection. If we don't, it warns the user and exits the program
+	if [ $connected ]; then
+		mkdir /home/$USER/Packages/pdf2txt_venv_gui/
+		python3 -m venv /home/$USER/Packages/pdf2txt_venv_gui/
+		cd /home/$USER/Packages/pdf2txt_venv_gui
+	
+		# the installation of the dependencies and whatnot are done within the virtual environment we just built
+		source bin/activate
+		git clone https://github.com/NLPatVCU/PDF2TXT.git >& /dev/null
+		pip3 install farm-haystack >& /dev/null
+		deactivate
+	elses
+		echo "Could not connect to github. Exiting install."
+		exit
+	fi
+fi
+	
+# at this point we are ready to actually take the arguments and run pdf2txt
+
+# get the arguments to pass to PDF2TXT
+# this will come from the arguments passed in by the GUI
+# the numbers are for the whole file arg, the input file path, the output file arg, and the output file path
+python3 pdf2txt.py $1 $2 $3 $4
