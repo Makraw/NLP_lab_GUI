@@ -15,7 +15,7 @@ public class PDf2TXT_GUI extends JFrame{
         window.setSize(500, 350);
         window.setLayout(null);
         window.setLocationRelativeTo(null);
-        window.setName(".pdf to .txt converter graphical version 0.2.0");
+        window.setName(".pdf to .txt converter graphical version 0.9.0");
 
         //create the label at the top to introduce the program
         JLabel intro = new JLabel("This program runs PDF2TXT graphically.");
