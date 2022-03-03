@@ -6,6 +6,8 @@ Linux terminal, a graphical version is designed here.
 
 Ultimately, this program is just a form to fill out that will store the entries and pass that stuff off to the already
 existing pdf2txt converter.
+
+THIS IS A DEFUNCT VERSION. IT DOES NOT WORK. NO FURTHER UPDATES EXPECTED.
 """
 import os
 
