@@ -15,21 +15,8 @@ fi
     
 
 # check if the directory already exists
-if [ -d "/home/$USER/Packages/pdf2txt_venv_gui/" ]; then
+if [ -d "/home/$USER/Packages/pdf2txt_venv/" ]; then
 	echo "PDF2TXT already installed."
-	
-	# this logic handles updating the dependencies. It will not run if there is no internet connection
-	if [ $connected ]; then
-		echo "Checking for Updates."
-		echo ""
-		pip install pymilvus==1.0.0 -U >& /dev/null
-		pip3 install farm-haystack==1.0.0 -U >& /dev/null	
-	else
-		echo "Could not connect to github, skipping updates."
-	fi
-	
-	cd /home/$USER/Packages/pdf2txt_venv_gui
-	source bin/activate
 
 # if it doesn't exist, we need to make it and install all the stuff we need
 else
@@ -39,9 +26,9 @@ else
 	
 	#this logic makes sure we have an internet connection. If we don't, it warns the user and exits the program
 	if [ $connected ]; then
-		mkdir /home/$USER/Packages/pdf2txt_venv_gui/
-		python3 -m venv /home/$USER/Packages/pdf2txt_venv_gui/
-		cd /home/$USER/Packages/pdf2txt_venv_gui
+		mkdir /home/$USER/Packages/pdf2txt_venv/
+		python3 -m venv /home/$USER/Packages/pdf2txt_venv/
+		cd /home/$USER/Packages/pdf2txt_venv
 	
 		# the installation of the dependencies and whatnot are done within the virtual environment we just built
 		source bin/activate
@@ -49,13 +36,17 @@ else
 		pip install pymilvus==1.0.0 -U >& /dev/null
 		pip3 install farm-haystack==1.0.0 -U >& /dev/null
 		deactivate
-	elses
+	else
 		echo "Could not connect to github. Exiting install."
 		exit
 	fi
 fi
 	
 # at this point we are ready to actually take the arguments and run pdf2txt
+
+# activate the venv
+cd /home/$USER/Packages/pdf2txt_venv
+source bin/activate
 
 # get the arguments to pass to PDF2TXT
 
