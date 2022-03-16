@@ -22,7 +22,8 @@ if [ -d "/home/$USER/Packages/pdf2txt_venv_gui/" ]; then
 	if [ $connected ]; then
 		echo "Checking for Updates."
 		echo ""
-		pip3 install farm-haystack -U >& /dev/null	
+		pip install pymilvus==1.0.0 -U >& /dev/null
+		pip3 install farm-haystack==1.0.0 -U >& /dev/null	
 	else
 		echo "Could not connect to github, skipping updates."
 	fi
@@ -45,7 +46,8 @@ else
 		# the installation of the dependencies and whatnot are done within the virtual environment we just built
 		source bin/activate
 		git clone https://github.com/NLPatVCU/PDF2TXT.git >& /dev/null
-		pip3 install farm-haystack >& /dev/null
+		pip install pymilvus==1.0.0 -U >& /dev/null
+		pip3 install farm-haystack==1.0.0 -U >& /dev/null
 		deactivate
 	elses
 		echo "Could not connect to github. Exiting install."
