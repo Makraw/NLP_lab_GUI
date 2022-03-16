@@ -58,6 +58,28 @@ fi
 # at this point we are ready to actually take the arguments and run pdf2txt
 
 # get the arguments to pass to PDF2TXT
-# this will come from the arguments passed in by the GUI
-# the numbers are for the whole file arg, the input file path, the output file arg, and the output file path
-python3 pdf2txt.py $1 $2 $3 $4
+
+# get the wholefile argument
+wholefile=O
+while [ "$wholefile" != "Y" ] && [ "$wholefile" != "N" ]; do
+	echo "Convert whole directory? (Y/N)"
+	read input1
+	wholefile=$input1
+done
+
+echo""
+
+# get the input filepath and output filepath arguments
+echo "Input the COMPLETE input and output file paths separated by a space."
+read infile outfile
+
+# we can now actually run pdf2txt
+source bin/activate
+cd $RUNPATH
+if [ $wholefile = "N" ]; then
+	python3 pdf2txt.py -f $infile -o $outfile
+else
+	python3 pdf2txt.py -d $infile -o $outfile
+fi
+echo ""
+echo "conversion complete. converted files located at $outfile"
