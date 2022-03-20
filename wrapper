@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd /home/$USER/Packages/pdf2txt_venv_gui
+source bin/activate
+cd /home/makraw/Packages/pdf2txt_venv_gui/PDF2TXT/pdf2txt
+python3 pdf2txt.py $1 $2 $3 $4
