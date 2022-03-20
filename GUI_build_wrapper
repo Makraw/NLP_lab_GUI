@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# builds file structure and installs pdf2txt
+mkdir /home/$USER/Packages/pdf2txt_venv_gui/
+python3 -m venv /home/$USER/Packages/pdf2txt_venv_gui/
+cd /home/$USER/Packages/pdf2txt_venv_gui
+
+# the installation of the dependencies and whatnot are done within the virtual environment we just built
+source bin/activate
+git clone https://github.com/NLPatVCU/PDF2TXT.git >& /dev/null
+pip install pymilvus==1.0.0 >& /dev/null
+pip3 install farm-haystack==1.0.0 >& /dev/null
+deactivate
+echo "done"
